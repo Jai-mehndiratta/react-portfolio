@@ -1,0 +1,28 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 50px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid rgba(0,255,150,0.3);
+}
+
+.logo {
+  font-size: 28px;
+  color: #00ff99;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  font-size: 18px;
+}
+
+.nav-links a:hover {
+  color: #00ff99;
+  transform: scale(1.1);
+}
