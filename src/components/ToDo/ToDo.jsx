@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import "./ToDo.css";
+import { motion } from "framer-motion";
 
 function ToDo() {
-  // Load tasks from localStorage once on mount
   const [tasks, setTasks] = useState(() => {
     return JSON.parse(localStorage.getItem("tasks")) || [];
   });
 
   const [input, setInput] = useState("");
 
-  // Save tasks to localStorage whenever tasks change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
@@ -38,7 +37,13 @@ function ToDo() {
   }
 
   return (
-    <div className="todo-container">
+    <motion.main
+      className="todo-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      transition={{ duration: 0.4 }}
+    >
       <h2>React To-Do List</h2>
 
       <div className="input-row">
@@ -50,32 +55,46 @@ function ToDo() {
           onKeyDown={handleKeyDown}
         />
 
-        <button className="add-btn" onClick={addTask}>
+        {/* Micro-interaction Add button */}
+        <motion.button
+          className="add-btn"
+          onClick={addTask}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           Add
-        </button>
+        </motion.button>
       </div>
 
       <ul className="todo-list">
         {tasks.map((task, index) => (
-          <li
+          <motion.li
             key={index}
             className={task.completed ? "completed" : ""}
             onClick={() => toggleComplete(index)}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
           >
             {task.text}
-            <button
+
+            {/* Delete button animation */}
+            <motion.button
               className="delete-btn"
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.85 }}
               onClick={(e) => {
-                e.stopPropagation(); // Prevent marking complete while clicking delete
+                e.stopPropagation();
                 deleteTask(index);
               }}
             >
               🗑
-            </button>
-          </li>
+            </motion.button>
+          </motion.li>
         ))}
       </ul>
-    </div>
+    </motion.main>
   );
 }
 

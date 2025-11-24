@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import heroImg from "../assets/jai.jpeg";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer } from "../animations/variants";
+
+const cardVariant = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
 
 function Portfolio() {
   const [typingText, setTypingText] = useState("");
 
-  // Typing effect (React version of your old script.js)
   useEffect(() => {
     const lines = [
       "Full-Stack Developer in the making",
@@ -50,201 +60,172 @@ function Portfolio() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Smooth scroll helper
-  const scrollToId = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <>
-      {/* NAVBAR – same as old file */}
-      <nav className="nav">
-        <div className="nav-left">
-          <span className="logo">Jai</span>
-        </div>
-        <ul className="nav-links">
-          <li>
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId("home");
-              }}
-            >
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              href="#projects"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId("projects");
-              }}
-            >
-              Projects
-            </a>
-          </li>
-          <li>
-            <a
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId("about");
-              }}
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId("contact");
-              }}
-            >
-              Contact
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, scale: 0.98 }}
+      transition={{ duration: 0.4 }}
+    >
 
-      <main>
-        {/* HERO – same layout as original */}
-        <section id="home" className="section hero">
-          <div className="hero-content">
-            <p className="hero-tag">
-              Full-Stack Developer in the making · SRite
-            </p>
-            <h1>
+      {/* ================= HERO SECTION ================= */}
+      <section id="home" className="section hero">
+        <div className="hero-content">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p variants={fadeUp} className="hero-tag">
+              FULL-STACK DEVELOPER IN THE MAKING · SRITE
+            </motion.p>
+
+            <motion.h1 variants={fadeUp}>
               Hey, I'm <span className="accent">Jai Mehndiratta</span>
-            </h1>
-            <h2 className="hero-typing">
+            </motion.h1>
+
+            <motion.h2 variants={fadeUp} className="hero-typing">
               <span>{typingText}</span>
               <span className="cursor">|</span>
-            </h2>
-            <p className="hero-subtext">
-              I’m learning to build fast, modern, and scalable web experiences —
+            </motion.h2>
+
+            <motion.p variants={fadeUp} className="hero-subtext">
+              I’m learning to build fast, modern, scalable web experiences —
               from clean UIs to interactive logic and full-stack projects.
-            </p>
-            <div className="hero-actions">
-              <button
-                id="cta"
-                className="btn-primary"
-                onClick={() => scrollToId("projects")}
+            </motion.p>
+
+            {/* ACTION BUTTONS */}
+            <motion.div variants={fadeUp} className="hero-actions">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-primary"
+                onClick={() =>
+                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+                }
               >
                 View My Work
-              </button>
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=mendiratta.jai12@gmail.com"
-                className="btn-secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Email Me
-              </a>
-            </div>
-          </div>
+              </motion.button>
 
-          <div className="hero-image-wrapper">
-            <img
-              src={heroImg}
-              alt="Photo of Jai Mehndiratta"
-              className="hero-img"
-            />
-          </div>
-        </section>
+              <Link to="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn btn-outline"
+                >
+                  Contact Me
+                </motion.button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
 
-        {/* PROJECTS – same design, but links go to React routes */}
-        <section id="projects" className="section">
-          <h2 className="section-title">Projects</h2>
-          <p className="section-subtitle">
-            Things I’ve built while learning the web.
-          </p>
+        {/* HERO IMAGE RIGHT SIDE */}
+        <motion.div
+          className="hero-image-wrapper"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <img src={heroImg} alt="profile" className="hero-img" />
+        </motion.div>
+      </section>
 
-          <div className="project-grid">
-            <Link to="/calculator" className="project-card">
+      {/* ================= PROJECTS ================= */}
+      <section id="projects" className="section">
+        <h2 className="section-title">Projects</h2>
+        <p className="section-subtitle">
+          Things I’ve built while learning the web.
+        </p>
+
+        <motion.div
+          className="project-grid"
+          initial="hidden"
+          animate="visible"
+          transition={{ staggerChildren: 0.15 }}
+        >
+          <Link to="/calculator" className="project-card">
+            <motion.div
+              variants={cardVariant}
+              whileHover={{ scale: 1.06 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
               <div className="project-badge">React · JavaScript</div>
               <h3>React Calculator</h3>
-              <p>
-                A keyboard-friendly calculator with delete, clear, and operator
-                styling — rebuilt in React with clean state logic.
-              </p>
+              <p>A clean calculator with keyboard support and polished UI.</p>
               <span className="project-link">Open project →</span>
-            </Link>
+            </motion.div>
+          </Link>
 
-            <Link to="/todo" className="project-card">
-              <div className="project-badge">
-                React · localStorage · state
-              </div>
-              <h3>React To-Do App</h3>
-              <p>
-                A modern to-do app with localStorage, delete, completion toggle,
-                and clean component architecture.
-              </p>
+          <Link to="/todo" className="project-card">
+            <motion.div
+              variants={cardVariant}
+              whileHover={{ scale: 1.06 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
+              <div className="project-badge">React · LocalStorage</div>
+              <h3>To-Do App</h3>
+              <p>A modern task manager with local persistence.</p>
               <span className="project-link">Open project →</span>
-            </Link>
+            </motion.div>
+          </Link>
 
-            <div className="project-card project-card-disabled">
-              <div className="project-badge">Coming Soon</div>
-              <h3>More Incoming...</h3>
-              <p>
-                I’m actively learning React, Next.js, and full-stack tools. More
-                projects will show up here as I keep shipping.
-              </p>
-              <span className="project-link">Building in public…</span>
-            </div>
-          </div>
-        </section>
+          <motion.div
+            variants={cardVariant}
+            className="project-card project-card-disabled"
+          >
+            <div className="project-badge">Coming soon</div>
+            <h3>More incoming...</h3>
+            <p>More full-stack and Next.js builds are on their way.</p>
+            <span className="project-link">Building in public…</span>
+          </motion.div>
+        </motion.div>
+      </section>
 
-        {/* ABOUT – copied from original */}
-        <section id="about" className="section">
-          <h2 className="section-title">About Me</h2>
-          <div className="about-grid">
-            <div className="about-card glass">
-              <h3>Who I Am</h3>
-              <p>
-                I’m Jai, a student and developer who enjoys breaking complex
-                things into clean, working code. I like building real projects
-                instead of just tutorial hell.
-              </p>
-            </div>
-            <div className="about-card glass">
-              <h3>Background</h3>
-              <p>
-                Currently pursuing dual degrees and actively learning full-stack
-                development. I’m also part of <strong>SRite</strong>, where I
-                get exposed to tech, people, and opportunities to build.
-              </p>
-            </div>
-            <div className="about-card glass">
-              <h3>What I’m Learning</h3>
-              <p>
-                HTML, CSS, JavaScript, project structuring, and deployment—with
-                plans to move into React, Next.js, and the MERN stack as my
-                foundations get stronger.
-              </p>
-            </div>
-          </div>
-        </section>
+      {/* ================= ABOUT ================= */}
+      <section id="about" className="section">
+        <h2 className="section-title">About Me</h2>
+        <p className="section-subtitle">
+          Who I am and how I got here.
+        </p>
 
-        {/* CONTACT – same design */}
-        <section id="contact" className="section">
-          <h2 className="section-title">Contact</h2>
-          <div className="contact-card glass">
-            <p>Want to collaborate, discuss an idea, or just talk dev?</p>
+        <div className="about-grid">
+          <div className="about-card glass">
+            <h3>Background</h3>
             <p>
-              <strong>Email:</strong>{" "}
-              <a href="mailto:mendiratta.jai12@gmail.com">
-                mendiratta.jai12@gmail.com
-              </a>
+              I’m a student and developer passionate about building usable
+              real-world applications instead of tutorials.
             </p>
           </div>
-        </section>
-      </main>
-    </>
+
+          <div className="about-card glass">
+            <h3>What I do</h3>
+            <p>
+              Learning full-stack web development — building projects in React,
+              Next.js, and MERN.
+            </p>
+          </div>
+
+          <div className="about-card glass">
+            <h3>Vision</h3>
+            <p>
+              To build meaningful products, ship consistently, and grow publicly.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= CONTACT (scroll target only, real component on its own route) ================= */}
+      <section id="contact" className="section contact-preview">
+        <h2 className="section-title">Let’s Build Something</h2>
+        <p className="section-subtitle">Want to collaborate or talk?</p>
+
+        <Link to="/contact">
+          <button className="btn btn-primary">Go to Contact Page</button>
+        </Link>
+      </section>
+
+    </motion.main>
   );
 }
 

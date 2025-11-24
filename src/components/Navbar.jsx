@@ -3,13 +3,14 @@ import "./Navbar.css";
 
 function Navbar() {
   return (
-    <nav className="navbar glass">
-      <h2 className="logo">Jai</h2>
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/calculator">Calculator</Link>
-        <Link to="/todo">To-Do</Link>
-      </div>
+    <nav className="nav">
+      <span className="logo">Jai</span>
+      <ul className="nav-links">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/calculator">Projects</Link></li>
+        <li><Link to="/todo">To-Do</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+      </ul>
     </nav>
   );
 }
