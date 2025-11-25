@@ -13,6 +13,37 @@ const cardVariant = {
   },
 };
 
+// REAL PROJECT DATA – update links to your actual GitHub later
+const projects = [
+  {
+    name: "React Calculator",
+    tech: "React · JavaScript",
+    description:
+      "A clean, keyboard-friendly calculator with proper operator handling and polished UI.",
+    route: "/calculator",
+    live: "https://react-portfolio-pied-gamma.vercel.app/calculator",
+    source: "https://github.com/Jai-mehndiratta/react-portfolio/tree/main/src/components/Calculator",
+  },
+  {
+    name: "React To-Do App",
+    tech: "React · LocalStorage",
+    description:
+      "A modern to-do app with persistent storage, completion toggle, and clean component structure.",
+    route: "/todo",
+    live: "https://react-portfolio-pied-gamma.vercel.app/todo",
+    source: "https://github.com/Jai-mehndiratta/react-portfolio/tree/main/src/components/ToDo",
+  },
+  {
+    name: "More Incoming...",
+    tech: "Coming soon",
+    description:
+      "More React, Next.js and full-stack projects as I keep shipping and learning in public.",
+    route: null,
+    live: null,
+    source: null,
+  },
+];
+
 function Portfolio() {
   const [typingText, setTypingText] = useState("");
 
@@ -67,7 +98,6 @@ function Portfolio() {
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.4 }}
     >
-
       {/* ================= HERO SECTION ================= */}
       <section id="home" className="section hero">
         <div className="hero-content">
@@ -99,9 +129,11 @@ function Portfolio() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn btn-primary"
+                className="btn-primary"
                 onClick={() =>
-                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+                  document
+                    .getElementById("projects")
+                    ?.scrollIntoView({ behavior: "smooth" })
                 }
               >
                 View My Work
@@ -111,11 +143,22 @@ function Portfolio() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn btn-outline"
+                  className="btn-secondary"
                 >
                   Contact Me
                 </motion.button>
               </Link>
+
+              {/* DOWNLOAD RESUME */}
+              <a href="/resume.pdf" download>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary btn-resume"
+                >
+                  Download Resume
+                </motion.button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
@@ -135,7 +178,7 @@ function Portfolio() {
       <section id="projects" className="section">
         <h2 className="section-title">Projects</h2>
         <p className="section-subtitle">
-          Things I’ve built while learning the web.
+          Real things I’ve built while learning the web.
         </p>
 
         <motion.div
@@ -144,57 +187,67 @@ function Portfolio() {
           animate="visible"
           transition={{ staggerChildren: 0.15 }}
         >
-          <Link to="/calculator" className="project-card">
+          {projects.map((project) => (
             <motion.div
+              key={project.name}
               variants={cardVariant}
-              whileHover={{ scale: 1.06 }}
+              whileHover={{ scale: 1.04 }}
               transition={{ type: "spring", stiffness: 200 }}
+              className={`project-card ${
+                !project.live && !project.source ? "project-card-disabled" : ""
+              }`}
             >
-              <div className="project-badge">React · JavaScript</div>
-              <h3>React Calculator</h3>
-              <p>A clean calculator with keyboard support and polished UI.</p>
-              <span className="project-link">Open project →</span>
-            </motion.div>
-          </Link>
+              <div className="project-badge">{project.tech}</div>
+              <h3>{project.name}</h3>
+              <p>{project.description}</p>
 
-          <Link to="/todo" className="project-card">
-            <motion.div
-              variants={cardVariant}
-              whileHover={{ scale: 1.06 }}
-              transition={{ type: "spring", stiffness: 200 }}
-            >
-              <div className="project-badge">React · LocalStorage</div>
-              <h3>To-Do App</h3>
-              <p>A modern task manager with local persistence.</p>
-              <span className="project-link">Open project →</span>
-            </motion.div>
-          </Link>
+              {(project.route || project.live || project.source) && (
+                <div className="project-actions">
+                  {project.route && (
+                    <Link to={project.route} className="project-btn project-btn-outline">
+                      Open App
+                    </Link>
+                  )}
 
-          <motion.div
-            variants={cardVariant}
-            className="project-card project-card-disabled"
-          >
-            <div className="project-badge">Coming soon</div>
-            <h3>More incoming...</h3>
-            <p>More full-stack and Next.js builds are on their way.</p>
-            <span className="project-link">Building in public…</span>
-          </motion.div>
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="project-btn project-btn-primary"
+                    >
+                      Live
+                    </a>
+                  )}
+
+                  {project.source && (
+                    <a
+                      href={project.source}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="project-btn project-btn-secondary"
+                    >
+                      Code
+                    </a>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 
       {/* ================= ABOUT ================= */}
       <section id="about" className="section">
         <h2 className="section-title">About Me</h2>
-        <p className="section-subtitle">
-          Who I am and how I got here.
-        </p>
+        <p className="section-subtitle">Who I am and how I got here.</p>
 
         <div className="about-grid">
           <div className="about-card glass">
             <h3>Background</h3>
             <p>
               I’m a student and developer passionate about building usable
-              real-world applications instead of tutorials.
+              real-world applications instead of just tutorials.
             </p>
           </div>
 
@@ -202,29 +255,29 @@ function Portfolio() {
             <h3>What I do</h3>
             <p>
               Learning full-stack web development — building projects in React,
-              Next.js, and MERN.
+              Next.js, and the MERN stack.
             </p>
           </div>
 
           <div className="about-card glass">
             <h3>Vision</h3>
             <p>
-              To build meaningful products, ship consistently, and grow publicly.
+              To build meaningful products, ship consistently, and grow in
+              public with each project.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ================= CONTACT (scroll target only, real component on its own route) ================= */}
+      {/* ================= CONTACT PREVIEW ================= */}
       <section id="contact" className="section contact-preview">
         <h2 className="section-title">Let’s Build Something</h2>
         <p className="section-subtitle">Want to collaborate or talk?</p>
 
         <Link to="/contact">
-          <button className="btn btn-primary">Go to Contact Page</button>
+          <button className="btn-primary">Go to Contact Page</button>
         </Link>
       </section>
-
     </motion.main>
   );
 }
