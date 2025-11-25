@@ -5,8 +5,8 @@ import Calculator from "./components/Calculator/Calculator";
 import ToDo from "./components/ToDo/ToDo";
 import Contact from "./components/Contact";
 import { AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
-// Route wrapper to enable animations between pages
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -23,9 +23,19 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  // Dark Mode State with LocalStorage Persistence
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    document.body.className = darkMode ? "dark" : "light";
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
   return (
     <Router>
-      <Navbar />
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <AnimatedRoutes />
     </Router>
   );
